@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Requests\LoginUserRequest;
 use App\Models\User;
+use App\Models\Employee;
+use Illuminate\Http\Request;
 
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\LoginUserRequest;
 
 class AuthController extends Controller
 {
@@ -45,5 +46,16 @@ class AuthController extends Controller
     public function logOut(Request $request){
         $request->user()->currentAccessToken()->delete();
         return ResponseController::success('You have successfully logged out');
+    }
+    public function employeeLogin(Request $request){
+        $employee = Employee::where('email', $request->email)->first();
+        // return $employee;
+        if(!$employee or !Hash::check($request->password, $employee->password)){
+            return ResponseController::error('Either password or email is incorrect', 422);
+        }
+        $token = $employee->createToken('employee: '. $request->email)->plainTextToken;
+        return response([
+            "token" => $token
+        ]);
     }
 }
