@@ -22,7 +22,7 @@ return new class extends Migration
             $table->bigInteger('buy_games_number')->default(0);
             $table->bigInteger('point')->default(0);
             $table->bigInteger('level')->default(1);
-            $table->rememberToken();
+            // $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
         });
