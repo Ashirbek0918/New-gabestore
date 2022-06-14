@@ -17,10 +17,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
+            $table->string('profile_photo')->nullable();
+            $table->bigInteger('buy_games_number')->default(0);
+            $table->bigInteger('point')->default(0);
+            $table->bigInteger('level')->default(1);
+            // $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
