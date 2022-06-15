@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\News;
-use App\Models\User;
+use App\Models\Genre;
 use App\Models\Product;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,15 +15,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('genre_products', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Product::class)->nullabe();
-            $table->foreignIdFor(News::class)->nullabe();
-            $table->enum('status', ['checked', 'unchecked'])->default('unchecked');
+            $table->foreignIdFor(Genre::class);
+            $table->foreignIdFor(Product::class);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -35,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('genre_products');
     }
 };
