@@ -114,7 +114,7 @@ class ProductController extends Controller
             return ResponseController::error('You are not allowed to update any Product!', 405);
         }
         $validator = Validator::make($request->all(), [
-            'itle' =>'required|unique:products,title|max:50',
+            'title' =>'required|unique:products,title|max:50',
             'title_img' => 'required|url',
             'rating' =>'required|numeric',
             'first_price' =>'required|numeric',
@@ -165,4 +165,5 @@ class ProductController extends Controller
             "release" => $request->release,
         ]);
     }
+    
 }

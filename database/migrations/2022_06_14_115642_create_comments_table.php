@@ -18,10 +18,10 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Product::class)->nullabe();
             $table->foreignIdFor(News::class)->nullabe();
-            $table->string('title');
             $table->enum('status', ['checked', 'unchecked'])->default('unchecked');
             $table->timestamps();
             $table->softDeletes();
