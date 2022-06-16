@@ -48,7 +48,7 @@ class NewsController extends Controller
         return ResponseController::success('Successfuly deleted');
     }
 
-    public function singleNews(News $news){
+    public function singleoneNews(News $news){
         foreach ($news as $new){
             $news['comments'] =  $new->comments()->count();
         }

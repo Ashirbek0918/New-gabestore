@@ -37,7 +37,7 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::post('news/create','create');
         Route::put('news/update/{news}','update');
         Route::delete('news/delete/{news}','destroy');
-        Route::get('news/onenews/{news}','singleNews');
+        Route::get('news/onenews/{news}','singleoneNews');
         Route::get('allNews','allnews');
         Route::get('news/comments/{news}','comments');
     });
