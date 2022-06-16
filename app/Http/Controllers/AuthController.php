@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Requests\LoginUserRequest;
 use App\Models\User;
-
+use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\LoginUserRequest;
+use App\Http\Requests\UserLoginRequest;
 
 class AuthController extends Controller
 {
@@ -40,6 +40,16 @@ class AuthController extends Controller
 
     public function getme(Request $request){
         return $request->user();
+    }
+
+    public function update(UserLoginRequest $userrequest,User $user){
+        $user->update($userrequest->only([
+            'name',
+            'email',
+            'password',
+            'profile_photo'
+        ]));
+        return ResponseController::success('Successfuly updated');
     }
 
     public function logOut(Request $request){
