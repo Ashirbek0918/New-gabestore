@@ -89,6 +89,7 @@ class DeveloperController extends Controller
         if(!$developer){
             return ResponseController::error('There is no Developer with this ID', 404);
         }
+        $developer->products()->delete();
         $developer->delete();
         return ResponseController::success();
     }
