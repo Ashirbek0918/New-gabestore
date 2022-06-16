@@ -18,17 +18,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $guarded = ['id'];
-    
-    public function baskets(){
-        return $this->hasMany(Basket::class);
-    }
-    public function comments(){
-        return $this->hasMany(Comment::class);
-    }
-
-    public function favourites(){
-        return $this->hasMany(Favourite::class);
-    }
 
    
     protected $hidden = [
