@@ -26,16 +26,16 @@ return new class extends Migration
 
         Employee::create([
             'name' =>'Ashirbek',
-            'email' =>'ashirbekrajapboyev@gmail.com',
+            'email' =>'ashirbek@gmail.com',
             'password' =>Hash::make('12345'),
             'role' =>'admin'
         ]);
 
         Employee::create([
-            'name' =>'Ashirbek',
-            'email' =>'ashirbekrajapboyev1@gmail.com',
+            'name' =>'Rasul',
+            'email' =>'rasul@mail.ru',
             'password' =>Hash::make('12345'),
-            'role' =>'support'
+            'role' =>'admin'
         ]);
     }
 
