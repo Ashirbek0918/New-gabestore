@@ -2,10 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Favourite extends Model
 {
     use HasFactory;
+
+    protected $guareded = ['id'];
+
+    public function products(){
+        return $this->hasMany(Product::class.'id','product_id');
+    }
 }
