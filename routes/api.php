@@ -48,39 +48,52 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::delete('favourites/delete/{product_id}','delete');
         Route::get('favourites','favourites');
     });
-    Route::get('getme',[AuthController::class,'getme']);
-    Route::get('logout',[AuthController::class,'logOut']);
 
-    Route::post('/developer/create', [DeveloperController::class, 'create']);
-    Route::get('/developer/show/{developer}', [DeveloperController::class, 'showSingeDeveloper']);
-    Route::get('/developer/all', [DeveloperController::class, 'showAll']);
-    Route::put('/developer/{developer}', [DeveloperController::class, 'update']);
-    Route::delete('/developer/{developer}', [DeveloperController::class, 'delete']);
-    Route::get('/developer/history', [DeveloperController::class, 'history']);
-    Route::get('/developer/restore', [DeveloperController::class, 'restore']);
+    // developers
+    Route::controller(DeveloperController::class)->group(function(){
+        Route::post('/developer/create', 'create');
+        Route::get('/developer/show/{developer}', 'showSingeDeveloper');
+        Route::get('/developer/all', 'showAll');
+        Route::put('/developer/{developer}', 'update');
+        Route::delete('/developer/{developer}', 'delete');
+        Route::get('/developer/history', 'history');
+        Route::get('/developer/restore', 'restore');
+    });
 
-    Route::post('product/create', [ProductController::class, 'create']);
-    Route::get('product/show', [ProductController::class, 'show']);
-    Route::put('product/update', [ProductController::class, 'update']);
-    Route::delete('product/delete/{product}', [ProductController::class, 'delete']);
-    Route::get('product/history', [ProductController::class, 'history']);
-    Route::get('product/restore/{product}', [ProductController::class, 'restore']);
-    Route::get('product/genre/{genre}', [ProductController::class, 'genre']);
-    Route::get('product/developer/{developer}', [ProductController::class, 'developer']);
-    Route::get('product/publisher/{publisher}', [ProductController::class, 'publisher']);
+    // products
+    Route::controller(ProductController::class)->group(function(){
+        Route::post('product/create', 'create');
+        Route::get('product/show', 'show');
+        Route::put('product/update', 'update');
+        Route::delete('product/delete/{product}', 'delete');
+        Route::get('product/history', 'history');
+        Route::get('product/restore/{product}', [ProductController::class, 'restore']);
+        Route::get('product/genre/{genre}', 'genre');
+        Route::get('product/developer/{developer}', 'developer');
+        Route::get('product/publisher/{publisher}', 'publisher');
+    });
 
-    Route::post('/genre/create', [GenreController::class, 'create']);
-    Route::get('/genre/show', [GenreController::class, 'show']);
-    Route::put('/genre/{genre}', [GenreController::class, 'update']);
-    Route::delete('/genre/delete/{genre}', [GenreController::class, 'delete']);
-    Route::get('/genre/history', [GenreController::class, 'history']);
-    Route::get('/genre/restore', [GenreController::class, 'restore']);
+    //genres
+    Route::controller(GenreController::class)->group(function(){
+        Route::post('/genre/create', 'create');
+        Route::get('/genre/show', 'show');
+        Route::put('/genre/{genre}', 'update');
+        Route::delete('/genre/delete/{genre}', 'delete');
+        Route::get('/genre/history', 'history');
+        Route::get('/genre/restore', 'restore');
+    });
 
-    Route::post('/comment', [CommentController::class, 'create']);
+    //comments
+    Route::controller(Comment::class)->group(function(){
+        Route::post('/comment', 'create');
+    });
 
-    Route::post('/publisher/create', [PublisherController::class, 'create']);
-    Route::get('/publisher/show', [PublisherController::class, 'show']);
-    Route::put('/publisher/update', [PublisherController::class, 'update']);
-    Route::delete('/publisher/{publisher}', [PublisherController::class, 'delete']);
-    Route::get('/publisher/restore', [PublisherController::class, 'restore']);
+    //publishers
+    Route::controller(Publisher::class)->group(function(){
+        Route::post('/publisher/create', 'create');
+        Route::get('/publisher/show', 'show');
+        Route::put('/publisher/update', 'update');
+        Route::delete('/publisher/{publisher}', 'delete');
+        Route::get('/publisher/restore', 'restore');
+    });
 });
