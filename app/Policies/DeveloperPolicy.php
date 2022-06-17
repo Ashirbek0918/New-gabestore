@@ -29,9 +29,9 @@ class DeveloperPolicy
      * @param  \App\Models\Developer  $developer
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Developer $developer)
+    public function view()
     {
-        //
+        return Auth::user()->role == 'admin';
     }
 
     /**
