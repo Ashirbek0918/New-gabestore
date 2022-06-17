@@ -2,12 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Publisher extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected  $guarded = ['id'];
+    protected $casts = ['deleted_at'];
+
+    public function products(){
+        return $this->hasMany(Product::class);
+    }
 }

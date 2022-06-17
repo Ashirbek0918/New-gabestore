@@ -11,9 +11,8 @@ use App\Http\Requests\UserLoginRequest;
 
 class AuthController extends Controller
 {
-    public function register(UserRequest $request){
+    public function register(Request $request){
         $email = $request->email;
-        return $email;
         $user = User::where('email',$email)->first();
         if($user){
             return ResponseController::error('This email already taken',422);

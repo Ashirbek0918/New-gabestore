@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('logotip');
             $table->mediumText('description');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

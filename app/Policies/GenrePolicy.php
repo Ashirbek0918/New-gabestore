@@ -29,9 +29,9 @@ class GenrePolicy
      * @param  \App\Models\Genre  $genre
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Genre $genre)
+    public function view()
     {
-        //
+        return Auth::user()->role == 'admin';
     }
 
     /**
@@ -52,9 +52,9 @@ class GenrePolicy
      * @param  \App\Models\Genre  $genre
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Genre $genre)
+    public function update()
     {
-        //
+        return Auth::user()->role == 'admin';
     }
 
     /**
@@ -64,9 +64,9 @@ class GenrePolicy
      * @param  \App\Models\Genre  $genre
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Genre $genre)
+    public function delete()
     {
-        //
+        return Auth::user()->role == 'admin';
     }
 
     /**

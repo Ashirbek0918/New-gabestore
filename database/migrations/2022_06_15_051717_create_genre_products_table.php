@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(Genre::class);
             $table->foreignIdFor(Product::class);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -52,9 +52,9 @@ class PublisherPolicy
      * @param  \App\Models\Publisher  $publisher
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Publisher $publisher)
+    public function update()
     {
-        //
+        return Auth::user()->role == 'admin';
     }
 
     /**
@@ -64,9 +64,9 @@ class PublisherPolicy
      * @param  \App\Models\Publisher  $publisher
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Publisher $publisher)
+    public function delete()
     {
-        //
+        return Auth::user()->role == 'admin';
     }
 
     /**
@@ -76,9 +76,9 @@ class PublisherPolicy
      * @param  \App\Models\Publisher  $publisher
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Publisher $publisher)
+    public function restore()
     {
-        //
+        return Auth::user()->role == 'admin';
     }
 
     /**
