@@ -11,7 +11,7 @@ use App\Http\Requests\UserLoginRequest;
 
 class AuthController extends Controller
 {
-    public function register(UserRequest $request){
+    public function register(Request $request){
         $email = $request->email;
         $user = User::where('email',$email)->first();
         if($user){

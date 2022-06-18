@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Genre;
 use App\Models\Comment;
 use App\Models\Product;
+use App\Models\Developer;
+use App\Models\Publisher;
 use App\Models\GenreProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -66,7 +69,6 @@ class ProductController extends Controller
             "location" => $request->location,
             "publisher_id" => $request->publisher_id,
             "developer_id" => $request->developer_id,
-            "genre" => $request->genre,
             "platform" => $request->platform,
             "release" => $request->release,
         ]);
@@ -78,7 +80,7 @@ class ProductController extends Controller
         }
         return ResponseController::success();
     }
-    //All good
+    // need to be  modified
     public function show(){
         $products = Product::paginate(20);
         $collection = [
@@ -164,5 +166,94 @@ class ProductController extends Controller
             "release" => $request->release,
         ]);
     }
-    
+    // All good
+    public function delete($product_id){
+        try{
+            $this->authorize('delete', Product::class);
+        }catch(\Throwable $th){
+            return ResponseController::error('You are not permitted to delete any Product!', 405);
+        }
+        $product = Product::find($product_id);
+        if(!$product){
+            return ResponseController::error('No product is found here to delete!', 404);
+        }
+        Comment::where('product_id', $product_id)->delete();
+        $product->delete();
+        return ResponseController::success();
+    }
+    // All good
+    public function history(){
+        try {
+            $this->authorize('view', Product::class);
+        } catch (\Throwable $th) {
+            return ResponseController::error("You are not allowed to see deleted products",405);
+        }
+        $products = Product::onlyTrashed()->get(['id', 'title', 'title_img', 'first_price', 'discount', 'discount_price']);
+        if(count($products) == 0){
+            return ResponseController::error('No deleted porducts has found ', 404);
+        }
+        return ResponseController::data($products);
+    }
+    public function restore($product_id){
+        $product = Product::find($product_id);
+        $comments = $product->comments;
+        return $comments;
+        if($product->trashed()){
+            $product->restore();
+
+        }
+    }
+    // ALL good
+    public function genre(Genre $genre){
+        $product_ids = GenreProduct::where('genre_id', $genre->id)->get('product_id');
+        $products = [];
+        if(!$product_ids){
+            return ResponseController::error('No product found there!', 404);
+        }
+        foreach($product_ids as $id){
+            // $comments = Comment::where('product_id', $id['product_id'])->get();
+            $product = Product::where('id', $id['product_id'])->first();
+            $products[] = [
+                "product_id" => $product->id,
+                "product_title" => $product->title,
+                "title_img" => $product->title_img,
+                "price" => $product->first_price,
+                "discount" => $product->discount ?? 0,
+                "current_price" => $product->discount ?? 0,
+                "purchased_games" => $product->purchased_games,
+                "developers" => $product->developer_id,
+                "publisher" => $product->publisher_id,
+                // "commments" => $product->commments
+
+
+            ];
+        }
+        return ResponseController::data($products);
+    }
+    // ALL good
+    public function developer($developer_id){
+        $developer = Developer::find($developer_id);
+        if(!$developer ){
+            return ResponseController::error('No developer is found', 404);
+        }
+        $products = $developer->products()->get(['id', 'title', 'title_img', 'first_price', 'discount', 'discount_price']);
+        if(!$products){
+            return ResponseController::error('No product is found from the Developer!', 404);
+        }
+        $developer["products"] = $products;
+        return ResponseController::data($developer);
+    }
+    // All good
+    public function publisher($publisher_id){
+        $publisher = Publisher::find($publisher_id);
+        if(!$publisher){
+            return ResponseController::error('No publisher is found!', 404);
+        }
+        $products = $publisher->products()->get(['id', 'title', 'title_img', 'first_price', 'discount', 'discount_price']);
+        if(!$products){
+            return ResponseController::error('No product is found from this Pulbisher', 404);
+        }
+        $publisher["products"] = $products;
+        return ResponseController::data($publisher);
+    }
 }

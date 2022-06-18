@@ -18,11 +18,6 @@ class CommentController extends Controller
         if($validator->fails()){
             return ResponseController::error($validator->errors()->first());
         }
-        $comment = Comment::where('title', $request->title)
-        ->first();
-        if($comment){
-            return ResponseController::error('Comment is already written!', 403);
-        }
         Comment::create([
             "title" => $request->title,
             "user_id" => $request->user_id,

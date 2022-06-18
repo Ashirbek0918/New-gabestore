@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('logo_img');
             $table->mediumText('description');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

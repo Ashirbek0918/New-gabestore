@@ -35,7 +35,6 @@ return new class extends Migration
             $table->string('location');
             $table->foreignIdFor(Publisher::class);
             $table->foreignIdFor(Developer::class);
-            $table->json('genre');
             $table->string('platform');
             $table->json('release');
             $table->timestamps();
