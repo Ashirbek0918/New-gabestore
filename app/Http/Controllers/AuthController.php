@@ -56,5 +56,4 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
         return ResponseController::success('You have successfully logged out');
     }
- 
 }

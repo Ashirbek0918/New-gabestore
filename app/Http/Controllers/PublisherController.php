@@ -17,7 +17,7 @@ class PublisherController extends Controller
         $validator = Validator::make($request->all(), [
             "title" => 'required|string',
             "image" => 'required|url',
-            "logotip" => 'required|url',
+            "logo_img" => 'required|url',
             "description" => 'nullable'
         ]);
         if($validator->fails()){
@@ -31,7 +31,7 @@ class PublisherController extends Controller
         Publisher::create([
             "title" => $request->title,
             "image" => $request->image,
-            "logotip" => $request->logotip,
+            "logo_img" => $request->logo_img,
             "description" => $request->description
         ]);
         return ResponseController::success();

@@ -17,7 +17,7 @@ class DeveloperController extends Controller
         $validator = Validator::make($request->all(), [
             "title" => 'required',
             "image" => 'required|url',
-            "logotip" => 'required|url',
+            "logo_img" => 'required|url',
         ]);
         if($validator->fails()){
             return ResponseController::error($validator->errors()->first());
@@ -29,7 +29,7 @@ class DeveloperController extends Controller
         Developer::create([
             "title" => $request->title,
             "image" => $request->image,
-            "logotip" => $request->logotip,
+            "logo_img" => $request->logo_img,
         ]);
         return ResponseController::success();
     }

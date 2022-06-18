@@ -55,7 +55,6 @@ class ProductController extends Controller
             "first_price" => $request->first_price,
             "discount" => $request->discount,
             "discount_price" => $request->first_price-($request->first_price*$request->discount)/100,
-            "purchased_games" => $request->purchased_games,
             "about" => $request->about,
             "minimal_system" => $request->minimal_system,
             "recommended_system" => $request->recommended_system,

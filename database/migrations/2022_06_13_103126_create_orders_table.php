@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
 use App\Models\Basket;
+use App\Models\Product;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -18,7 +18,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Basket::class);
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Product::class);
             $table->uuid('activation_code');
             $table->double('price');
             $table->double('discount');

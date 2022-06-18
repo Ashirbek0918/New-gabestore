@@ -19,7 +19,7 @@ class User extends Authenticatable
      */
     protected $guarded = ['id'];
     
-    public function baskets(){
+    public function basket(){
         return $this->hasMany(Basket::class);
     }
     public function comments(){

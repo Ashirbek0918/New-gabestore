@@ -23,7 +23,7 @@ return new class extends Migration
             $table->double('first_price');
             $table->double('discount')->nullable();
             $table->double('discount_price')->nullable();
-            $table->bigInteger('purchased_games')->nullable();
+            $table->bigInteger('purchased_games')->default(0);
             $table->mediumText('about');
             $table->json('minimal_system');
             $table->json('recommended_system');

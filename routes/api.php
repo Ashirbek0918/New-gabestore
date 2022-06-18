@@ -10,6 +10,7 @@ use App\Http\Controllers\GenreController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DeveloperController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PublisherController;
 
 
@@ -48,8 +49,20 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::delete('favourites/delete/{product_id}','delete');
         Route::get('favourites','favourites');
     });
-    Route::get('getme',[AuthController::class,'getme']);
-    Route::get('logout',[AuthController::class,'logOut']);
+
+    //order
+    Route::controller(OrderController::class)->group(function(){
+        Route::post('order/create','create');
+        Route::delete('order/delete/{order}','delete');
+    });
+
+    //basket
+    Route::controller(BasketController::class)->group(function(){
+        Route::get('allbaskets','allBaskets');
+        Route::get('basket','basket');
+        Route::delete('basket/delete/{basket}','delete');
+        Route::post('basket/pay/{basket}','pay');
+    });
 
     Route::post('/developer/create', [DeveloperController::class, 'create']);
     Route::get('/developer/show/{developer}', [DeveloperController::class, 'showSingeDeveloper']);
