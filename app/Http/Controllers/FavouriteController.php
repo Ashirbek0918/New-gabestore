@@ -31,6 +31,7 @@ class FavouriteController extends Controller
 
     public function favourites(Request $request){
         $favourites = $request->user()->favourites()->get();
+        // return $favourites;
         if(count($favourites) == 0){
             return ResponseController::error('Favourite products not yet',404);
         }

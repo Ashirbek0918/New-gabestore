@@ -13,7 +13,6 @@ use App\Policies\GenrePolicy;
 use App\Policies\ProductPolicy;
 use App\Policies\DeveloperPolicy;
 use App\Policies\PublisherPolicy;
-r
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 

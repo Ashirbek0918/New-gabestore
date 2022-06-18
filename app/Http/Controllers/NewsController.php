@@ -20,6 +20,7 @@ class NewsController extends Controller
             'image' =>$request->image,
             'text' =>$request->text,
         ]);
+        return ResponseController::success('Successfuly created');
     }
 
     public function update(NewsRequest $request, News $news){
@@ -48,10 +49,8 @@ class NewsController extends Controller
         return ResponseController::success('Successfuly deleted');
     }
 
-    public function singleNews(News $news){
-        foreach ($news as $new){
-            $news['comments'] =  $new->comments()->count();
-        }
+    public function singleoneNews(News $news){
+        $news['comments'] = $news->comments()->count();
         $news->increment('views');
         return ResponseController::data($news);
     }
@@ -80,9 +79,9 @@ class NewsController extends Controller
     }
 
     public function comments(News $news){
-        $comments = $news->comments();
-        if(empty($comments)){
-            return ResponseController::error('Comments not yet');
+        $comments = $news->comments;
+        if(count($comments) == 0){
+            return ResponseController::error('Comments not yet in this news');
         }
         foreach ($comments as $comment){
             $comment['user'] = [

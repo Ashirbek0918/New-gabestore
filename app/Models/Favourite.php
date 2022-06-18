@@ -10,9 +10,9 @@ class Favourite extends Model
 {
     use HasFactory;
 
-    protected $guareded = ['id'];
+    protected $guarded = ['id'];
 
     public function products(){
-        return $this->hasMany(Product::class.'id','product_id');
+        return $this->hasMany(Product::class,'id','product_id');
     }
 }
