@@ -12,13 +12,13 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
     protected $guarded = ['id'];
+    protected $dates = ['deleted_at'];
 
     protected $casts = [
         'minimal_system' => "json",
         "recommended_system" => "json",
         "screenshots" => "json",
         "trailers" => "json",
-        "genre" => "json",
         "release" => "json",
     ];
 

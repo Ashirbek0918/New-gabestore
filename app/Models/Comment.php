@@ -10,10 +10,10 @@ class Comment extends Model
 {
     use HasFactory, SoftDeletes;
 
+    // need
     public function user(){
         return $this->hasOne(User::class, 'id', 'user_id');
     }
-
 
     protected $guarded = [
         'id'

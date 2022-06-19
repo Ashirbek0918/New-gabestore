@@ -1,16 +1,19 @@
 <?php
+use App\Models\Comment;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BasketController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\BasketController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DeveloperController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\FavouriteController;
+use App\Http\Controllers\PromocodeController;
 use App\Http\Controllers\PublisherController;
 
 
@@ -80,14 +83,21 @@ Route::middleware('auth:sanctum')->group(function(){
     // products
     Route::controller(ProductController::class)->group(function(){
         Route::post('product/create', 'create');
+        Route::get('product/all/show', 'all');
         Route::get('product/show', 'show');
-        Route::put('product/update', 'update');
+        Route::put('product/{product}', 'update');
         Route::delete('product/delete/{product}', 'delete');
         Route::get('product/history', 'history');
         Route::get('product/restore/{product}', [ProductController::class, 'restore']);
         Route::get('product/genre/{genre}', 'genre');
         Route::get('product/developer/{developer}', 'developer');
         Route::get('product/publisher/{publisher}', 'publisher');
+        Route::get('product/comments/{product}', 'product_comments');
+        Route::get('product/last/added', 'lastAdded');
+        Route::get('product/order/rating', 'orderByRating');
+        Route::get('product/order/discount', 'orderByDiscount');
+        Route::get('product/order/games', 'orderByPurchasedGames');
+        Route::get('product/order/price', 'orderByPrice');
     });
 
     //genres
@@ -101,16 +111,37 @@ Route::middleware('auth:sanctum')->group(function(){
     });
 
     //comments
-    Route::controller(Comment::class)->group(function(){
+    Route::controller(CommentController::class)->group(function(){
         Route::post('/comment', 'create');
+        Route::get('/comment/product', 'productComments');
+        Route::get('/comment/news', 'newsComments');
+        Route::delete('/comment/delete/{comment}', 'delete');
+        Route::get('/comment/history', 'history');
+        Route::get('/comment/restore', 'restore');
+        Route::get('/comment/update/{comment}', 'update');
+        Route::get('/comment/add/point', 'addPoint');
     });
 
     //publishers
-    Route::controller(Publisher::class)->group(function(){
+    Route::controller(PublisherController::class)->group(function(){
         Route::post('/publisher/create', 'create');
         Route::get('/publisher/show', 'show');
         Route::put('/publisher/update', 'update');
         Route::delete('/publisher/{publisher}', 'delete');
         Route::get('/publisher/restore', 'restore');
+    });
+
+    // promocode
+    Route::controller(PromocodeController::class)->group(function(){
+        Route::post('/promocode/create', 'create');
+        Route::get('/promocode/show', 'show');
+        Route::delete('/promocode/delete/{promocode}', 'delete');
+        Route::put('/promocode/update/{promocode}', 'update');
+    });
+
+    // image
+    Route::controller(ImageController::class)->group(function(){
+        Route::post('/image/upload', 'upload');
+        Route::delete('/image/delete/{fileName}', 'deleteImage');
     });
 });
