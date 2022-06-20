@@ -29,7 +29,7 @@ class EmployeeController extends Controller
         return ResponseController::success('Successfuly created ');
     }
 
-    public function login(Request $request){
+    public function employeLogin(Request $request){
         $employee = Employee::where('email',$request->email)->first();
         $password = $request->password;
         if(!$employee OR !Hash::check($password,$employee->password)){
