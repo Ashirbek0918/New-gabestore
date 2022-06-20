@@ -17,6 +17,7 @@ class UserController extends Controller
             $final['users'][] = [
                 'id'=>$user->id,
                 'name'=>$user->name,
+                'email' =>$user->email,
                 'profile_photo'=>$user->profile_photo,
                 'point' =>$user->point,
                 'level'=>$user->level,
@@ -31,7 +32,7 @@ class UserController extends Controller
     public function orderbyPoint(Request $request){
         $final = [];
         $user = $request->user();
-        $users = User::orderBy('point','Desc')->take(10)->get(['id','name','profile_photo','point','level']);
+        $users = User::orderBy('point','Desc')->take(10)->get(['id','name','email','profile_photo','point','level']);
         $final['user'] = $user;
         $final['users'] = $users;
         return ResponseController::data($final);
