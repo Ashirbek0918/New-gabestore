@@ -16,7 +16,7 @@ use App\Http\Controllers\PublisherController;
 
 Route::post('/register/user',[AuthController::class,'register']);
 Route::get('/login',[AuthController::class,'login']);
-Route::get('employee/login',[AuthController::class,'employeeLogin']);
+Route::get('employee/login',[EmployeeController::class,'login']);
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('getme',[AuthController::class,'getme']);
