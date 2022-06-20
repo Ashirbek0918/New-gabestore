@@ -6,8 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\LoginUserRequest;
-use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\UpdateUserRequest;
 
 class AuthController extends Controller
 {
@@ -26,7 +25,7 @@ class AuthController extends Controller
         return ResponseController::success('Successfuly registered');
     }
 
-    public function login(LoginUserRequest $request){
+    public function login( Request $request){
         $user = User::where('email',$request->email)->first();
         $password = $request->password;
         if (!$user OR !Hash::check($password,$user->password)){
@@ -38,15 +37,14 @@ class AuthController extends Controller
         ]);
     }
 
-    public function getme(Request $request){
+    public function getme(Request $request){ 
         return $request->user();
     }
 
-    public function update(UserLoginRequest $userrequest,User $user){
+    public function update(UpdateUserRequest $userrequest ,User  $user){
         $user->update($userrequest->only([
             'name',
             'email',
-            'password',
             'profile_photo'
         ]));
         return ResponseController::success('Successfuly updated');

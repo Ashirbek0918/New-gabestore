@@ -66,6 +66,7 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::get('basket','basket');
         Route::delete('basket/delete/{basket}','delete');
         Route::post('basket/pay/{basket}','pay');
+        Route::get('basket/orders/{basket}','order');
     });
 
 

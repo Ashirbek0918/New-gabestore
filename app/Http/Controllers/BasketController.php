@@ -46,6 +46,11 @@ class BasketController extends Controller
         return ResponseController::data($final);
     }
 
+    public function order(Basket $basket){
+        $orders = $basket->orders;
+        return ResponseController::data($orders);
+    }
+
     public function delete(Basket $basket){
         $basket->orders()->delete();
         $basket->delete();

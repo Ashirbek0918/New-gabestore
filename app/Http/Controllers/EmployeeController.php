@@ -6,6 +6,7 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\EmployeeRequest;
+use App\Http\Requests\UpdateEmployeeRequest;
 
 class EmployeeController extends Controller
 {
@@ -54,17 +55,17 @@ class EmployeeController extends Controller
         return ResponseController::success('Successfuly deleted');
     }
 
-    public function update(EmployeeRequest $request,Employee $employee){
+    public function update(UpdateEmployeeRequest $request,Employee  $employee){
         try{
             $this->authorize('update',Employee::class);
         }catch(\Throwable $th){
             return ResponseController::error('You Are not allowed');
         }
-        $employee->update($request->only([
-            'name',
-            'email',
-            'password'
-        ]));
+        $employee->update([
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'password'=>Hash::make($request->password),
+        ]);
         return ResponseController::success('Successfuly updated');   
     }
 
