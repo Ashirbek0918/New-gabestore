@@ -84,7 +84,8 @@ Route::middleware('auth:sanctum')->group(function(){
     // products
     Route::controller(ProductController::class)->group(function(){
         Route::post('product/create', 'create');
-        Route::get('product/all/show', 'all');
+        Route::get('product/all/orderBy', 'all');
+        Route::get('product/getby/id', 'showById');
         Route::get('product/show', 'show');
         Route::put('product/{product}', 'update');
         Route::delete('product/delete/{product}', 'delete');
@@ -129,6 +130,7 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::get('/publisher/show', 'show');
         Route::put('/publisher/update', 'update');
         Route::delete('/publisher/{publisher}', 'delete');
+        Route::get('/publisher/history', 'history');
         Route::get('/publisher/restore', 'restore');
     });
 
@@ -143,6 +145,6 @@ Route::middleware('auth:sanctum')->group(function(){
     // image
     Route::controller(ImageController::class)->group(function(){
         Route::post('/image/upload', 'upload');
-        Route::delete('/image/delete/{fileName}', 'deleteImage');
+        Route::delete('/image/delete', 'deleteImage');
     });
 });
