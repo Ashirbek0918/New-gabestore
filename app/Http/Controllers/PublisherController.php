@@ -6,7 +6,7 @@ use App\Models\Product;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+// All good
 class PublisherController extends Controller
 {
     public function create(Request $request){
@@ -37,7 +37,6 @@ class PublisherController extends Controller
         ]);
         return ResponseController::success();
     }
-    // All good
     public function show(){
         $publishers = Publisher::paginate(15);
         $collection = [
@@ -48,17 +47,18 @@ class PublisherController extends Controller
             return ResponseController::error('No publisher in there!', 404);
         }
         foreach($publishers as $publisher){
+            $products = $publisher->products()->count();
             $collection["publishers"][] = [
                 "publisher_id" => $publisher->id,
                 "publisher_title" => $publisher->title,
                 "publisher_image" => $publisher->image,
                 "publisher_logotip" => $publisher->logotip,
-                "publisher_description" => $publisher->description
+                "publisher_description" => $publisher->description,
+                "products" => $products,
             ];
         }
         return ResponseController::data($collection);
     }
-    // All good
     public function update(Request $request ){
         try {
             $this->authorize('update', Publisher::class);
@@ -86,7 +86,6 @@ class PublisherController extends Controller
         ]);
         return ResponseController::success();
     }
-    // All good
     public function delete($publisher, Request $request){
         try {
             $this->authorize('delete', Publisher::class);
@@ -95,14 +94,24 @@ class PublisherController extends Controller
         }
         $publisher = Publisher::find($publisher);
         $product = Product::where('publisher_id', $publisher->id)->get();
-        $count = count($product);
             foreach($product as $item){
                 $item->delete();
             }
         $publisher->delete();
         return ResponseController::success('Publisher and related Porducts are deleted');
     }
-    // All good
+    public function history(){
+        try {
+            $this->authorize('view', Publisher::class);
+        } catch (\Throwable $th) {
+            return ResponseController::error('You are not allowed to view any Publisher here!', 405);
+        }
+        $publishers = Publisher::onlyTrashed()->get();
+        if(!$publishers){
+            return ResponseController::error('There is no deleted publisher!', 404);
+        }
+        return ResponseController::data($publishers);
+    }
     public function restore(Request $request){
         try {
             $this->authorize('restore', Publisher::class);
@@ -110,12 +119,10 @@ class PublisherController extends Controller
             return ResponseController::error('You are not allowed to restore any Publisher!', 405);
         }
         $publisher = Publisher::withTrashed()->find($request->id);
-        $products = $publisher->products;
-        return $products;
-        // $product = Product::withTrashed()->where('publisher_id', $request->id)->get();
         if(!$publisher){
             return ResponseController::error('No deleted Publisher found to restore!', 404);
         }
+        $publisher->products()->restore();
         $publisher->restore();
         return ResponseController::success('Publisher and Porducts are restored', 200);
     }

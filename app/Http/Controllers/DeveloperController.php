@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Validator;
 // No problem at all.
 class DeveloperController extends Controller
 {
-    // All good
     public function create(Request $request){
         try {
             $this->authorize('create', Developer::class);
@@ -35,11 +34,9 @@ class DeveloperController extends Controller
         ]);
         return ResponseController::success();
     }
-    // All good
     public function showSingeDeveloper(Developer $developer){
         return ResponseController::data($developer);
     }
-    //All good
     public function showAll(){
         $developers = Developer::paginate(10);
         $collection = [
@@ -58,7 +55,6 @@ class DeveloperController extends Controller
         }
         return ResponseController::data($collection);
     }
-    // All good
     public function update($developer,Request $request){
         try{
             $this->authorize('update', Developer::class);
@@ -81,7 +77,6 @@ class DeveloperController extends Controller
         $developer->update($request->all());
         return ResponseController::success();
     }
-    // All good
     public function delete($developer, Request $request){
         try {
             $this->authorize('delete', Developer::class);
@@ -97,7 +92,6 @@ class DeveloperController extends Controller
         return ResponseController::success();
 
     }
-    // All good
     public function history(){
         try {
             $this->authorize('view', Developer::class);
@@ -110,7 +104,6 @@ class DeveloperController extends Controller
         }
         return ResponseController::data($developers);
     }
-    // All good
     public function restore(Request $request){
         $developer = Developer::withTrashed()->find($request->id);
         if($developer->trashed()){

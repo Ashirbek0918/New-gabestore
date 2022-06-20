@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+// All good
+class ImageController extends Controller{
 
-class ImageController extends Controller
-{
-    // All good
     public function upload(Request $request){
         $validator = Validator::make($request->all(), [
             "images" => 'required',
@@ -31,8 +31,8 @@ class ImageController extends Controller
         }
         return $image_url;
     }
-    public function deleteImage($fileName){
-        $path = public_path('/images/'.$fileName);
+    public function deleteImage(Request $request){
+        $path = public_path('/images/'.$request->image);
         if(!$path){
             return ResponseController::error('Image does not exists', 404);
         }

@@ -29,9 +29,9 @@ class PublisherPolicy
      * @param  \App\Models\Publisher  $publisher
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Publisher $publisher)
+    public function view()
     {
-        //
+        return Auth::user()->role == 'admin';
     }
 
     /**

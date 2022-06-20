@@ -15,10 +15,9 @@ class PromocodeController extends Controller
             return ResponseController::error('You are not allowed to create a Promocode!', 405);
         }
         $validator = Validator::make($request->all(), [
-            "user_id" => 'required|exists:users,id',
             "promocode" => 'required|unique:promocodes,promocode',
             "count" => 'required|numeric',
-            "discount" => 'nullable'
+            "discount" => 'nullable|integer'
         ]);
         if($validator->fails()){
             return ResponseController::error($validator->errors()->first());
@@ -29,7 +28,6 @@ class PromocodeController extends Controller
             return ResponseController::error('The promocode is exists', 422);
         }
         Promocode::create([
-            "user_id" => $request->user_id,
             "promocode" => $request->promocode,
             "count" => $request->count ?? 0,
             "discount" => $request->discount ?? 0   ,
@@ -42,7 +40,8 @@ class PromocodeController extends Controller
         } catch (\Throwable $th) {
             return ResponseController::error('You are not allowed to view a Promocode!', 405);
         }
-        $promocodes = Promocode::paginate(10);
+        $promocodes = Promocode::orderBy('count', 'desc')
+        ->paginate(10);
         $collection = [
             "last_page" => $promocodes->lastPage(),
             "promocodes" => [],
@@ -52,10 +51,10 @@ class PromocodeController extends Controller
         }
         foreach($promocodes as $promocode){
             $collection["promocodes"][] = [
-                "user_id" => $promocode->user_id,
                 "promocode" => $promocode->promocode,
                 "count" => $promocode->count,
                 "discount" => $promocode->discount,
+                "created_at" => $promocode->created_at,
             ];
         }
         return ResponseController::data($collection);
@@ -80,10 +79,9 @@ class PromocodeController extends Controller
             return ResponseController::error('You are not allowed to update a Promocode!', 405);
         }
         $validator = Validator::make($request->all(), [
-            "user_id" => 'required|exists:users,id',
             "promocode" => 'required|unique:promocodes,promocode',
             "count" => 'required|numeric',
-            "discount" => 'nullable|'
+            "discount" => 'nullable|integer'
         ]);
         if($validator->fails()){
             return ResponseController::error($validator->errors()->first());

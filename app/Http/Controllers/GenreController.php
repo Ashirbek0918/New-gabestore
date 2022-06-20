@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Validator;
 // All good
 class GenreController extends Controller
 {
-    // All good
     public function create(Request $request){
         try {
             $this->authorize('create', Genre::class);
@@ -32,7 +31,6 @@ class GenreController extends Controller
         ]);
         return ResponseController::success();
     }
-    // All good
     public function show(){
         $genres = Genre::paginate(20);
         $collection = [
@@ -49,7 +47,6 @@ class GenreController extends Controller
         }
         return ResponseController::data($collection);
     }
-    // All good
     public function update($genre, Request $request){
         try {
             $this->authorize('update', Genre::class);
@@ -71,7 +68,6 @@ class GenreController extends Controller
         ]);
         return ResponseController::success();
     }
-    // All good
     public function delete($genre){
         try {
             $this->authorize('delete', Genre::class);
@@ -86,7 +82,6 @@ class GenreController extends Controller
         $genre->genre_products()->delete();
         return ResponseController::success();
     }
-    // All good
     public function history(){
         try {
             $this->authorize('view', Genre::class);
@@ -99,7 +94,6 @@ class GenreController extends Controller
         }
         return ResponseController::data($genres);
     }
-    // All good
     public function restore(Request $request){
         $genre = Genre::withTrashed()->find($request->genre_id);
         if($genre->trashed()){

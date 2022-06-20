@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
 {
-    // All good
     public function create(Request $request ){
         $validator = Validator::make($request->all(), [
             "title" => 'required',
@@ -28,7 +27,6 @@ class CommentController extends Controller
         ]);
         return ResponseController::success();
     }
-    // All good
     public function productComments(){
         $comments = Comment::whereNotNull('product_id')
         ->where('status', 'unchecked')
@@ -54,7 +52,6 @@ class CommentController extends Controller
         }
         return ResponseController::data($collection);
     }
-    //All good
     public function newsComments(){
         $comments = Comment::whereNotNull('news_id')
         ->orderBy('id','Desc')
@@ -79,7 +76,6 @@ class CommentController extends Controller
         }
         return ResponseController::data($final);
     }
-    // All good
     public function delete($comment){
         $comment = Comment::find($comment);
         if(!$comment){
@@ -88,7 +84,6 @@ class CommentController extends Controller
         $comment->delete();
         return ResponseController::success();
     }
-    // All good,
     public function history(){
         try{
             $this->authorize('view',Comment::class);
@@ -103,7 +98,6 @@ class CommentController extends Controller
         }
         return ResponseController::data($comments);
     }
-    // All good
     public function restore(Request $request){
         $comment_id = $request->comment_id;
         $comment = Comment::onlyTrashed()
@@ -115,7 +109,6 @@ class CommentController extends Controller
         $comment->restore();
         return ResponseController::success();
     }
-    // All good
     public function update($comment_id, Request $request){
         $comment = Comment::find($comment_id);
         if(!$comment){
@@ -124,7 +117,6 @@ class CommentController extends Controller
         $comment->update($request->all());
         return ResponseController::success();;
     }
-    // All good
     public function addPoint(Request $request){
         $id = $request->comment_id;
         $comment = Comment::find($id);
