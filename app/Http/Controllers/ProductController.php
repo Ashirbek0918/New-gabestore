@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
-    // All good
     public function create(Request $request){
         try {
             $this->authorize('create', Product::class);
@@ -80,15 +79,29 @@ class ProductController extends Controller
         }
         return ResponseController::success();
     }
-    // need to be done
+    public function showById(Request $request){
+        $developer_id = $request->developer_id;
+        $publisher_id = $request->publisher_id;
+
+        $show = Product::when($developer_id, function($query) use($developer_id){
+            return $query->where('developer_id', $developer_id);
+        })->when($publisher_id, function($query) use($publisher_id){
+            return $query->where('publisher_id', $publisher_id);
+        })->get();
+
+        if(count($show) == 0){
+            return ResponseController::error('There is no Product');
+        }
+        return ResponseController::data($show);
+    }
     public function all(Request $request){
-        $orderBy = $request->orderBy; // expensive, inexpensice, popular, date, alphabet,
-        $genre = $request->genre; // 1, 2, 3
-        $price = $request->price;
-         $products = Product::when($orderBy, function ($query, $orderBy){
-            if($orderBy == 'inexpensive'){
+        $orderBy = $request->orderBy;
+        $genre = $request->genre;
+
+        $products = Product::when($orderBy, function($query, $orderBy){
+            if($orderBy == 'expensive'){
                 $query->orderBy('first_price', 'desc');
-            }elseif($orderBy == 'expensive'){
+            }elseif($orderBy == 'inexpensive'){
                 $query->orderBy('first_price', 'asc');
             }elseif($orderBy == 'alphabet'){
                 $query->orderBy('title', 'asc');
@@ -97,10 +110,35 @@ class ProductController extends Controller
             }elseif($orderBy == 'popular'){
                 $query->orderBy('purchased_games', 'desc');
             }
-         });
-         return $products;
+        });
+
+        if($genre){
+            $products = $products->whereHas('genre', function($query) use ($genre){
+                $query->whereIn('genre_id', explode('|', $genre));
+            });
+        }
+
+        $products = $products->paginate(15);
+        if (!$products) {
+            return ResponseController::error(' No Products yet', 404);
+        }
+        $final = [
+            'last_page'=> $products->lastPage(),
+            'products' => [],
+        ];
+        foreach ($products as $item) {
+            $final['products'][]= [
+                'id' =>$item->id,
+                'title' => $item->title,
+                'title_img' => $item->title_img,
+                'rating' => $item->rating,
+                'first_price' => $item->first_price,
+                'discount' => $item->discount,
+                'second_price' => $item->second_price,
+            ];
+        }
+        return ResponseController::data($final);
     }
-    // need to be  modified
     public function show(){
         $products = Product::paginate(20);
         $collection = [
@@ -127,7 +165,6 @@ class ProductController extends Controller
         }
         return ResponseController::data($collection);
     }
-    // All good
     public function update(Product $product,Request $request){
         try {
             $this->authorize('update', Product::class);
@@ -161,7 +198,6 @@ class ProductController extends Controller
         $product->update($request->all());
         return ResponseController::success();
     }
-    // All good
     public function delete($product_id){
         try{
             $this->authorize('delete', Product::class);
@@ -176,7 +212,6 @@ class ProductController extends Controller
         $product->delete();
         return ResponseController::success();
     }
-    // All good
     public function history(){
         try {
             $this->authorize('view', Product::class);
@@ -198,7 +233,6 @@ class ProductController extends Controller
         }
         return ResponseController::error('No product found to delete!', 404);
     }
-    // ALL good
     public function genre(Genre $genre){
         $product_ids = GenreProduct::where('genre_id', $genre->id)->get('product_id');
         $products = [];
@@ -225,7 +259,6 @@ class ProductController extends Controller
         }
         return ResponseController::data($products);
     }
-    // ALL good
     public function developer($developer_id){
         $developer = Developer::find($developer_id);
         if(!$developer ){
@@ -238,7 +271,6 @@ class ProductController extends Controller
         $developer["products"] = $products;
         return ResponseController::data($developer);
     }
-    // All good
     public function publisher($publisher_id){
         $publisher = Publisher::find($publisher_id);
         if(!$publisher){
@@ -251,7 +283,6 @@ class ProductController extends Controller
         $publisher["products"] = $products;
         return ResponseController::data($publisher);
     }
-    // All good
     public function product_comments(Product $product){
         $comments = $product->comments()->paginate(30);
         $collection = [
@@ -276,28 +307,23 @@ class ProductController extends Controller
         }
         return ResponseController::data($collection);
     }
-    // All good
     public function lastAdded(){
         $products = Product::orderBy('created_at', 'desc')->take(10)->get(['id', 'title', 'title_img', 'first_price', 'discount', 'discount_price']);
         return ResponseController::data($products);
 
     }
-    // All good
     public function orderByRating(){
         $products = Product::orderBy('rating', 'desc')->take(10)->get(['id', 'title', 'title_img', 'first_price', 'discount', 'discount_price']);
         return ResponseController::data($products);
     }
-    // All good
     public function orderByDiscount(){
         $products = Product::orderBy('discount', 'desc')->take(10)->get(['id', 'title', 'title_img', 'first_price', 'discount', 'discount_price']);
         return ResponseController::data($products);
     }
-    // All good
     public function orderByPurchasedGames(){
         $products = Product::orderBy('purchased_games', 'desc')->take(10)->get(['id', 'title', 'title_img', 'first_price', 'discount', 'discount_price']);
         return ResponseController::data($products);
     }
-    // All good
     public function orderByPrice(){
         $product = Product::orderBy('first_price', 'desc')->take(10)->get(['id', 'title', 'title_img', 'first_price', 'discount', 'discount_price']);
         return ResponseController::data($product);
